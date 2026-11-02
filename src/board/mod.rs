@@ -16,7 +16,7 @@ use rp_pico::hal::{
     },
     pac::{self, PIO0},
     pio::{PIOExt, SM0},
-    timer::{CountDown, Timer},
+    timer::{Alarm0, CountDown, Timer},
 };
 use smart_leds::{SmartLedsWrite, brightness};
 use ws2812_pio::Ws2812;
@@ -96,7 +96,31 @@ pub struct Lumatrix {
 }
 
 impl Lumatrix {
+    /**
+    Claims the board.
+
+    # Panics
+
+    Panics if called more than once, or if any peripheral it needs has
+    already been taken elsewhere.
+    */
     pub fn take() -> Self {
+        Self::take_with_alarm().0
+    }
+
+    /**
+    Claims the board along with hardware alarm 0.
+
+    The alarm is left unscheduled and its interrupt disabled; the caller
+    decides whether to drive the game from a timer interrupt. Use
+    [`take`](Self::take) when a blocking loop is enough.
+
+    # Panics
+
+    Panics if called more than once, or if any peripheral it needs has
+    already been taken elsewhere.
+    */
+    pub fn take_with_alarm() -> (Self, Alarm0) {
         // This function corresponds closely to the initilization code of the
         // example from the rp_pico repository.
 
@@ -145,13 +169,17 @@ impl Lumatrix {
         // Setup a delay for the LED blink signals:
         let delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().to_Hz());
 
-        // Create a count down timer for the Ws2812 instance:
-        let count_down = unsafe {
+        /* SAFETY: `take` panics on a second call, so this static is written
+        exactly once, before any reference to it is handed out. */
+        let timer = unsafe {
             static mut TIMER: Option<Timer> = None;
             TIMER = Some(Timer::new(pac.TIMER, &mut pac.RESETS, &clocks));
-            #[allow(static_mut_refs)] // this is fine
-            TIMER.as_ref().unwrap().count_down()
+            #[allow(static_mut_refs)]
+            TIMER.as_mut().unwrap()
         };
+
+        let alarm = timer.alarm_0().unwrap();
+        let count_down = timer.count_down();
 
         // Split the PIO state machine 0 into individual objects, so that
         // Ws2812 can use it:
@@ -168,7 +196,7 @@ impl Lumatrix {
             count_down,
         );
 
-        Self {
+        let lumatrix = Self {
             ws,
             delay,
             joystick_up,
@@ -179,7 +207,9 @@ impl Lumatrix {
             switch,
             leds: Default::default(),
             brightness: 50, // default brightness of about 20%
-        }
+        };
+
+        (lumatrix, alarm)
     }
 
     /**
