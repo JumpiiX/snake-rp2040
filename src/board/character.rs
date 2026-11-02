@@ -1,10 +1,12 @@
-//! Display characters on the Lumatrix.
+/*! Display characters on the Lumatrix. */
 
 pub mod table;
 
-/// A single character that can be drawn on the the display.
-///
-/// To draw a sequence of characters, see [`convert_str`].
+/**
+A single character that can be drawn on the the display.
+
+To draw a sequence of characters, see [`convert_str`].
+*/
 #[derive(Debug, Clone, Copy)]
 pub struct Character {
     pub coordinates: &'static [(usize, usize)],
@@ -12,9 +14,11 @@ pub struct Character {
     pub(crate) offset: usize,
 }
 impl Character {
-    /// Construct a new character from a slice of coordinates.
-    ///
-    /// The width is specified separately for intended whitespace.
+    /**
+    Construct a new character from a slice of coordinates.
+
+    The width is specified separately for intended whitespace.
+    */
     const fn new(coordinates: &'static [(usize, usize)], width: usize) -> Self {
         Self {
             coordinates,
@@ -29,9 +33,11 @@ impl Default for Character {
     }
 }
 
-/// Convert a string to an array of characters for display.
-///
-/// See [`draw_text_billboard_frame`](crate::Lumatrix::draw_text_billboard_frame).
+/**
+Convert a string to an array of characters for display.
+
+See [`draw_text_billboard_frame`](crate::Lumatrix::draw_text_billboard_frame).
+*/
 pub fn convert_str<const L: usize>(text: [u8; L]) -> ([Character; L], usize) {
     let mut result = [Character::default(); L];
     let mut length = 0;

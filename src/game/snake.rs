@@ -1,29 +1,33 @@
-//! The snake body.
+/*! The snake body. */
 
 use heapless::Deque;
 
 use super::direction::Direction;
 use super::position::{CELL_COUNT, Position};
 
-/// Number of segments the snake starts with.
+/** Number of segments the snake starts with. */
 const INITIAL_LENGTH: usize = 3;
 
-/// The snake, stored head-first.
-///
-/// Capacity is the whole board, so growing can never overflow: a snake that
-/// filled every cell would have won the game already.
+/**
+The snake, stored head-first.
+
+Capacity is the whole board, so growing can never overflow: a snake that
+filled every cell would have won the game already.
+*/
 pub struct Snake {
     segments: Deque<Position, CELL_COUNT>,
     heading: Direction,
 }
 
 impl Snake {
-    /// Creates a snake of [`INITIAL_LENGTH`] segments with its head at `head`,
-    /// extending backwards against `heading`.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the body would run off the board.
+    /**
+    Creates a snake of [`INITIAL_LENGTH`] segments with its head at `head`,
+    extending backwards against `heading`.
+
+    # Panics
+
+    Panics if the body would run off the board.
+    */
     pub fn new(head: Position, heading: Direction) -> Self {
         let mut segments = Deque::new();
         let mut cell = head;
@@ -34,55 +38,59 @@ impl Snake {
         Self { segments, heading }
     }
 
-    /// Returns the position of the head.
+    /** Returns the position of the head. */
     pub fn head(&self) -> Position {
         *self.segments.front().unwrap()
     }
 
-    /// Returns the direction the snake is currently travelling in.
+    /** Returns the direction the snake is currently travelling in. */
     pub fn heading(&self) -> Direction {
         self.heading
     }
 
-    /// Returns the number of segments.
+    /** Returns the number of segments. */
     pub fn len(&self) -> usize {
         self.segments.len()
     }
 
-    /// Returns whether the snake has no segments.
-    ///
-    /// Always false in practice; present to satisfy the companion to
-    /// [`len`](Self::len).
+    /**
+    Returns whether the snake has no segments.
+
+    Always false in practice; present to satisfy the companion to
+    [`len`](Self::len).
+    */
     pub fn is_empty(&self) -> bool {
         self.segments.is_empty()
     }
 
-    /// Returns an iterator over the segments, head first.
+    /** Returns an iterator over the segments, head first. */
     pub fn segments(&self) -> impl Iterator<Item = Position> + '_ {
         self.segments.iter().copied()
     }
 
-    /// Returns whether any segment covers `position`.
+    /** Returns whether any segment covers `position`. */
     pub fn occupies(&self, position: Position) -> bool {
         self.segments().any(|segment| segment == position)
     }
 
-    /// Turns the snake, unless the turn would reverse it onto its own neck.
+    /** Turns the snake, unless the turn would reverse it onto its own neck. */
     pub fn steer(&mut self, direction: Direction) {
         if !direction.is_reversal_of(self.heading) {
             self.heading = direction;
         }
     }
 
-    /// Returns the cell the head would move into on the next advance.
+    /** Returns the cell the head would move into on the next advance. */
     pub fn next_head(&self) -> Position {
         self.head().step(self.heading)
     }
 
-    /// Moves the snake one cell forward.
-    ///
-    /// When `grow` is set the tail stays put and the snake gets one segment
-    /// longer; otherwise the tail follows the head.
+    /**
+    Moves the snake one cell forward.
+
+    When `grow` is set the tail stays put and the snake gets one segment
+    longer; otherwise the tail follows the head.
+    */
     pub fn advance(&mut self, grow: bool) {
         let head = self.next_head();
         self.segments.push_front(head).ok().unwrap();
@@ -91,10 +99,12 @@ impl Snake {
         }
     }
 
-    /// Returns whether the head would hit the body on the next advance.
-    ///
-    /// The tail is excluded because it moves out of the way in the same tick,
-    /// unless the snake is about to grow into it.
+    /**
+    Returns whether the head would hit the body on the next advance.
+
+    The tail is excluded because it moves out of the way in the same tick,
+    unless the snake is about to grow into it.
+    */
     pub fn would_collide(&self, grow: bool) -> bool {
         let next = self.next_head();
         let body_len = if grow {

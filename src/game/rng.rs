@@ -1,29 +1,35 @@
-//! A small pseudo-random number generator.
-//!
-//! The board needs somewhere to put the next piece of food, which calls for
-//! randomness. `rand` pulls in more than this game needs, so a xorshift
-//! generator does the job in a handful of instructions and no allocation.
+/*!
+A small pseudo-random number generator.
 
-/// A 32-bit xorshift pseudo-random number generator.
-///
-/// Fast and tiny, with a period long enough for placing food. Not suitable
-/// for anything that depends on unpredictability.
+The board needs somewhere to put the next piece of food, which calls for
+randomness. `rand` pulls in more than this game needs, so a xorshift
+generator does the job in a handful of instructions and no allocation.
+*/
+
+/**
+A 32-bit xorshift pseudo-random number generator.
+
+Fast and tiny, with a period long enough for placing food. Not suitable
+for anything that depends on unpredictability.
+*/
 pub struct Rng {
     state: u32,
 }
 
 impl Rng {
-    /// Creates a generator from a seed.
-    ///
-    /// A zero seed would leave the generator stuck at zero, so it is replaced
-    /// by an arbitrary non-zero constant.
+    /**
+    Creates a generator from a seed.
+
+    A zero seed would leave the generator stuck at zero, so it is replaced
+    by an arbitrary non-zero constant.
+    */
     pub fn new(seed: u32) -> Self {
         Self {
             state: if seed == 0 { 0x2545_F491 } else { seed },
         }
     }
 
-    /// Returns the next value in the sequence.
+    /** Returns the next value in the sequence. */
     pub fn next_u32(&mut self) -> u32 {
         self.state ^= self.state << 13;
         self.state ^= self.state >> 17;
@@ -31,11 +37,13 @@ impl Rng {
         self.state
     }
 
-    /// Returns a value in `0..bound`.
-    ///
-    /// # Panics
-    ///
-    /// Panics if `bound` is zero.
+    /**
+    Returns a value in `0..bound`.
+
+    # Panics
+
+    Panics if `bound` is zero.
+    */
     pub fn next_below(&mut self, bound: u32) -> u32 {
         assert!(bound > 0);
         self.next_u32() % bound

@@ -1,20 +1,20 @@
-//! Movement directions on the board.
+/*! Movement directions on the board. */
 
-/// A direction the snake can travel in.
+/** A direction the snake can travel in. */
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
-    /// Towards increasing `y`.
+    /** Towards increasing `y`. */
     Up,
-    /// Towards decreasing `y`.
+    /** Towards decreasing `y`. */
     Down,
-    /// Towards decreasing `x`.
+    /** Towards decreasing `x`. */
     Left,
-    /// Towards increasing `x`.
+    /** Towards increasing `x`. */
     Right,
 }
 
 impl Direction {
-    /// Returns the direction pointing the opposite way.
+    /** Returns the direction pointing the opposite way. */
     pub fn opposite(self) -> Self {
         match self {
             Self::Up => Self::Down,
@@ -24,10 +24,12 @@ impl Direction {
         }
     }
 
-    /// Returns whether a turn into `other` would reverse the snake onto itself.
-    ///
-    /// A snake of length two or more cannot turn back into its own neck, so
-    /// such a turn is rejected rather than ending the game.
+    /**
+    Returns whether a turn into `other` would reverse the snake onto itself.
+
+    A snake of length two or more cannot turn back into its own neck, so
+    such a turn is rejected rather than ending the game.
+    */
     pub fn is_reversal_of(self, other: Self) -> bool {
         self == other.opposite()
     }

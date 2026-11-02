@@ -1,42 +1,48 @@
-//! Coordinates on the 8x8 board.
+/*! Coordinates on the 8x8 board. */
 
 use super::direction::Direction;
 
-/// Width and height of the board in cells.
+/** Width and height of the board in cells. */
 pub const BOARD_SIZE: u8 = 8;
 
-/// Number of cells on the board.
+/** Number of cells on the board. */
 pub const CELL_COUNT: usize = (BOARD_SIZE as usize) * (BOARD_SIZE as usize);
 
-/// A cell on the board.
-///
-/// Both coordinates are in `0..BOARD_SIZE`, with the origin at the bottom left.
+/**
+A cell on the board.
+
+Both coordinates are in `0..BOARD_SIZE`, with the origin at the bottom left.
+*/
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {
-    /// Horizontal coordinate, increasing to the right.
+    /** Horizontal coordinate, increasing to the right. */
     pub x: u8,
-    /// Vertical coordinate, increasing upwards.
+    /** Vertical coordinate, increasing upwards. */
     pub y: u8,
 }
 
 impl Position {
-    /// Creates a position from its coordinates.
-    ///
-    /// # Panics
-    ///
-    /// Panics if either coordinate lies outside the board.
-    pub fn new(x: u8, y: u8) -> Self {
+    /**
+    Creates a position from its coordinates.
+
+    # Panics
+
+    Panics if either coordinate lies outside the board.
+    */
+    pub const fn new(x: u8, y: u8) -> Self {
         assert!(x < BOARD_SIZE);
         assert!(y < BOARD_SIZE);
         Self { x, y }
     }
 
-    /// Returns the neighbouring position in `direction`, wrapping around the
-    /// board edges.
-    ///
-    /// Wrapping keeps every move legal, so the snake can only die by biting
-    /// itself. That makes the game forgiving enough to be fun on a board this
-    /// small.
+    /**
+    Returns the neighbouring position in `direction`, wrapping around the
+    board edges.
+
+    Wrapping keeps every move legal, so the snake can only die by biting
+    itself. That makes the game forgiving enough to be fun on a board this
+    small.
+    */
     pub fn step(self, direction: Direction) -> Self {
         let last = BOARD_SIZE - 1;
         match direction {
@@ -47,16 +53,18 @@ impl Position {
         }
     }
 
-    /// Returns the index of this position in a row-major array of cells.
+    /** Returns the index of this position in a row-major array of cells. */
     pub fn index(self) -> usize {
         (self.y as usize) * (BOARD_SIZE as usize) + (self.x as usize)
     }
 
-    /// Returns the position at `index` in a row-major array of cells.
-    ///
-    /// # Panics
-    ///
-    /// Panics if `index` is not a valid cell index.
+    /**
+    Returns the position at `index` in a row-major array of cells.
+
+    # Panics
+
+    Panics if `index` is not a valid cell index.
+    */
     pub fn from_index(index: usize) -> Self {
         assert!(index < CELL_COUNT);
         Self::new(
