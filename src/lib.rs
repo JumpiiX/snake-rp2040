@@ -14,6 +14,9 @@ pub mod game;
 mod board;
 
 #[cfg(target_os = "none")]
+pub mod input;
+
+#[cfg(target_os = "none")]
 pub mod render;
 
 #[cfg(target_os = "none")]
