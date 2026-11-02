@@ -21,9 +21,7 @@ use rp_pico::hal::{
 use smart_leds::{SmartLedsWrite, brightness};
 use ws2812_pio::Ws2812;
 
-#[path = "billboard.rs"]
 pub mod billboard;
-#[path = "character.rs"]
 pub mod character;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -475,27 +473,27 @@ pub mod color {
 
 /** Contains a number of predefined bitmaps. */
 pub mod bitmap {
-    pub static APPLE: &[u8] = include_bytes!("../bitmaps/apple.bmp");
-    pub static BAT: &[u8] = include_bytes!("../bitmaps/bat.bmp");
-    pub static BIG_IMG: &[u8] = include_bytes!("../bitmaps/big_img.bmp");
-    pub static BIRD: &[u8] = include_bytes!("../bitmaps/bird.bmp");
-    pub static CHICKEN: &[u8] = include_bytes!("../bitmaps/chicken.bmp");
-    pub static CRAB: &[u8] = include_bytes!("../bitmaps/crab.bmp");
-    pub static DINO: &[u8] = include_bytes!("../bitmaps/dino.bmp");
-    pub static DRINK: &[u8] = include_bytes!("../bitmaps/drink.bmp");
-    pub static DUCK: &[u8] = include_bytes!("../bitmaps/duck.bmp");
-    pub static ERLENMEYER: &[u8] = include_bytes!("../bitmaps/erlenmeyer.bmp");
-    pub static FOX: &[u8] = include_bytes!("../bitmaps/fox.bmp");
-    pub static MC_CREEPER: &[u8] = include_bytes!("../bitmaps/mc_creeper.bmp");
-    pub static MC_PIG: &[u8] = include_bytes!("../bitmaps/mc_pig.bmp");
-    pub static MOB_1: &[u8] = include_bytes!("../bitmaps/mob_1.bmp");
-    pub static MOUSE: &[u8] = include_bytes!("../bitmaps/mouse.bmp");
-    pub static MUSHROOM: &[u8] = include_bytes!("../bitmaps/mushroom.bmp");
-    pub static PIKACHU: &[u8] = include_bytes!("../bitmaps/pikachu.bmp");
-    pub static RABBIT: &[u8] = include_bytes!("../bitmaps/rabbit.bmp");
-    pub static SKULL: &[u8] = include_bytes!("../bitmaps/skull.bmp");
-    pub static TEST_GRID: &[u8] = include_bytes!("../bitmaps/test_grid.bmp");
-    pub static WINE: &[u8] = include_bytes!("../bitmaps/wine.bmp");
+    pub static APPLE: &[u8] = include_bytes!("../../bitmaps/apple.bmp");
+    pub static BAT: &[u8] = include_bytes!("../../bitmaps/bat.bmp");
+    pub static BIG_IMG: &[u8] = include_bytes!("../../bitmaps/big_img.bmp");
+    pub static BIRD: &[u8] = include_bytes!("../../bitmaps/bird.bmp");
+    pub static CHICKEN: &[u8] = include_bytes!("../../bitmaps/chicken.bmp");
+    pub static CRAB: &[u8] = include_bytes!("../../bitmaps/crab.bmp");
+    pub static DINO: &[u8] = include_bytes!("../../bitmaps/dino.bmp");
+    pub static DRINK: &[u8] = include_bytes!("../../bitmaps/drink.bmp");
+    pub static DUCK: &[u8] = include_bytes!("../../bitmaps/duck.bmp");
+    pub static ERLENMEYER: &[u8] = include_bytes!("../../bitmaps/erlenmeyer.bmp");
+    pub static FOX: &[u8] = include_bytes!("../../bitmaps/fox.bmp");
+    pub static MC_CREEPER: &[u8] = include_bytes!("../../bitmaps/mc_creeper.bmp");
+    pub static MC_PIG: &[u8] = include_bytes!("../../bitmaps/mc_pig.bmp");
+    pub static MOB_1: &[u8] = include_bytes!("../../bitmaps/mob_1.bmp");
+    pub static MOUSE: &[u8] = include_bytes!("../../bitmaps/mouse.bmp");
+    pub static MUSHROOM: &[u8] = include_bytes!("../../bitmaps/mushroom.bmp");
+    pub static PIKACHU: &[u8] = include_bytes!("../../bitmaps/pikachu.bmp");
+    pub static RABBIT: &[u8] = include_bytes!("../../bitmaps/rabbit.bmp");
+    pub static SKULL: &[u8] = include_bytes!("../../bitmaps/skull.bmp");
+    pub static TEST_GRID: &[u8] = include_bytes!("../../bitmaps/test_grid.bmp");
+    pub static WINE: &[u8] = include_bytes!("../../bitmaps/wine.bmp");
 }
 
 /**
