@@ -11,7 +11,7 @@ The same game written three times — blocking, interrupt-driven, and async — 
   <img src="https://img.shields.io/badge/heap-none-1a1a1a?style=flat&labelColor=0d0d0d" alt="No heap" />
 </p>
 
-<p align="center"><a href="media/snake.mp4">▶ Watch it run</a></p>
+https://github.com/user-attachments/assets/e6a0edcf-be2a-4da7-845a-e7f05a29112b
 
 ---
 
